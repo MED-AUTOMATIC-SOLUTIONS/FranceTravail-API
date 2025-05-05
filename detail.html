@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8">
-    <title>Offres France Travail</title>
-    <link rel="icon" href="logo.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8">
+  <title>Offres France Travail</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white p-8 dark">
+
+<body class="bg-gray-900 text-white p-4 sm:p-8 dark">
   <a href="index.html" class="text-blue-400 underline mb-4 block">← Retour à la liste</a>
-  
-  <!-- Loader -->
+
   <div id="loader" class="flex justify-center items-center">
     <div class="animate-spin rounded-full border-t-4 border-blue-400 w-16 h-16"></div>
   </div>
 
-  <!-- Conteneur des détails de l'offre -->
-  <div id="offre" class="bg-gray-800 max-w-4xl mx-auto p-6 rounded shadow hidden"></div>
+  <div id="offre" class="bg-gray-800 max-w-4xl w-full mx-auto p-4 sm:p-6 rounded shadow hidden"></div>
   <div id="erreur" class="text-red-600 text-center mt-4"></div>
 
   <script>
@@ -37,29 +37,27 @@
           return;
         }
 
-        // Masquer le loader
         document.getElementById("loader").classList.add("hidden");
-
-        // Afficher les détails de l'offre
         const container = document.getElementById("offre");
         container.classList.remove("hidden");
+
         container.innerHTML = `
           <h1 class="text-3xl font-bold mb-4">${data.intitule}</h1>
-          <p class="mt-2"><strong>Entreprise :</strong> ${data.entreprise?.nom || "N/A"}</p>
-          <p class="mt-2"><strong>Secteur d'activité :</strong> ${data.entreprise?.secteurActiviteLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Lieu :</strong> ${data.lieuTravail?.libelle || "N/A"}</p>
-          <p class="mt-2"><strong>Type de contrat :</strong> ${data.typeContratLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Date de début :</strong> ${data.dateDebut || "N/A"}</p>
-          <p class="mt-2"><strong>Durée :</strong> ${data.dureeTravailLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Horaires :</strong> ${data.tempsTravailLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Expérience requise :</strong> ${data.experienceLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Qualification :</strong> ${data.qualificationLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Niveau d'étude :</strong> ${data.niveauEtudeLibelle || "N/A"}</p>
-          <p class="mt-2"><strong>Langues :</strong> ${(data.langues || []).map(l => l.libelle + (l.niveauLibelle ? ` (${l.niveauLibelle})` : '')).join(', ') || "Non spécifiées"}</p>
-          <p class="mt-2"><strong>Compétences :</strong> ${(data.competences || []).map(c => c.libelle).join(', ') || "Non spécifiées"}</p>
-          <p class="mt-2"><strong>Permis exigés :</strong> ${(data.permis || []).map(p => p.libelle).join(', ') || "Aucun"}</p>
-          <p class="mt-2"><strong>Rémunération :</strong> ${data.salaire?.libelle || "Non précisée"}</p>
-          <p class="mt-2"><strong>Nombre de postes :</strong> ${data.nombrePostes || "Non précisé"}</p>
+          <p class="mt-2"><strong>Entreprise :</strong> <span class="text-gray-300">${data.entreprise?.nom || "N/A"}</span></p>
+          <p class="mt-2"><strong>Secteur d'activité :</strong> <span class="text-gray-300">${data.entreprise?.secteurActiviteLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Lieu :</strong> <span class="text-gray-300">${data.lieuTravail?.libelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Type de contrat :</strong> <span class="text-gray-300">${data.typeContratLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Date de début :</strong> <span class="text-gray-300">${data.dateDebut || "N/A"}</span></p>
+          <p class="mt-2"><strong>Durée :</strong> <span class="text-gray-300">${data.dureeTravailLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Horaires :</strong> <span class="text-gray-300">${data.tempsTravailLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Expérience requise :</strong> <span class="text-gray-300">${data.experienceLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Qualification :</strong> <span class="text-gray-300">${data.qualificationLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Niveau d'étude :</strong> <span class="text-gray-300">${data.niveauEtudeLibelle || "N/A"}</span></p>
+          <p class="mt-2"><strong>Langues :</strong> <span class="text-gray-300">${(data.langues || []).map(l => l.libelle + (l.niveauLibelle ? ` (${l.niveauLibelle})` : '')).join(', ') || "Non spécifiées"}</span></p>
+          <p class="mt-2"><strong>Compétences :</strong> <span class="text-gray-300">${(data.competences || []).map(c => c.libelle).join(', ') || "Non spécifiées"}</span></p>
+          <p class="mt-2"><strong>Permis exigés :</strong> <span class="text-gray-300">${(data.permis || []).map(p => p.libelle).join(', ') || "Aucun"}</span></p>
+          <p class="mt-2"><strong>Rémunération :</strong> <span class="text-gray-300">${data.salaire?.libelle || "Non précisée"}</span></p>
+          <p class="mt-2"><strong>Nombre de postes :</strong> <span class="text-gray-300">${data.nombrePostes || "Non précisé"}</span></p>
           <p class="mt-4"><strong>Description complète :</strong></p>
           <p class="mt-2 text-gray-400 whitespace-pre-line">${data.description || "Pas de description"}</p>
         `;
