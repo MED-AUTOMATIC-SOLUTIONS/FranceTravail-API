@@ -45,7 +45,35 @@
           <h1 class="text-3xl font-bold mb-4">${data.intitule}</h1>
           <p class="mt-2"><strong>Entreprise :</strong> <span class="text-gray-300">${data.entreprise?.nom || "N/A"}</span></p>
           <p class="mt-2"><strong>Secteur d'activité :</strong> <span class="text-gray-300">${data.entreprise?.secteurActiviteLibelle || "N/A"}</span></p>
+          <p class="mt-2">
+            <strong>Offre posté le :</strong>
+            <span class="text-gray-300">
+              ${data.dateCreation
+                ? new Date(data.dateCreation).toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }).replace(',', ' à')
+                : "N/A"}
+            </span>
+          </p>
           <p class="mt-2"><strong>Lieu :</strong> <span class="text-gray-300">${data.lieuTravail?.libelle || "N/A"}</span></p>
+          <p class="mt-2">
+            <strong>Dernière mise à jour :</strong>
+            <span class="text-gray-300">
+              ${data.dateActualisation
+                ? new Date(data.dateActualisation).toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }).replace(',', ' à')
+                : "N/A"}
+            </span>
+          </p>
           <p class="mt-2"><strong>Type de contrat :</strong> <span class="text-gray-300">${data.typeContratLibelle || "N/A"}</span></p>
           <p class="mt-2"><strong>Date de début :</strong> <span class="text-gray-300">${data.dateDebut || "N/A"}</span></p>
           <p class="mt-2"><strong>Durée :</strong> <span class="text-gray-300">${data.dureeTravailLibelle || "N/A"}</span></p>

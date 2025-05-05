@@ -23,23 +23,43 @@
   <div id="erreur" class="text-red-600 text-center mt-4"></div>
 
   <script>
+    function tempsEcouleDepuis(dateString) {
+      const date = new Date(dateString);
+      const maintenant = new Date();
+      const diffMs = maintenant - date;
+
+      const secondes = Math.floor(diffMs / 1000);
+      const minutes = Math.floor(secondes / 60);
+      const heures = Math.floor(minutes / 60);
+      const jours = Math.floor(heures / 24);
+      const mois = Math.floor(jours / 30);
+      const annees = Math.floor(jours / 365);
+
+      if (annees >= 1) return `il y a ${annees} an${annees > 1 ? 's' : ''}`;
+      if (mois >= 1) return `il y a ${mois} mois`;
+      if (jours >= 1) return `il y a ${jours} jour${jours > 1 ? 's' : ''}`;
+      if (heures >= 1) return `il y a ${heures} h`;
+      if (minutes >= 1) return `il y a ${minutes} min`;
+      return `à l’instant`;
+    }
+  
     async function chargerOffres() {
       const container = document.getElementById("offres");
       const erreur = document.getElementById("erreur");
-
+  
       container.innerHTML = "<div class='text-center p-4 text-gray-400 animate-pulse'>Chargement des offres...</div>";
-
+  
       try {
         const res = await fetch('https://francetravail-serveur.onrender.com/api/offres');
         const data = await res.json();
-
+  
         if (!data.resultats || data.resultats.length === 0) {
           container.innerHTML = "<p class='text-center text-gray-500'>Aucune offre trouvée.</p>";
           return;
         }
-
+  
         container.innerHTML = '';
-
+  
         data.resultats.forEach(offre => {
           const div = document.createElement("div");
           div.className = "bg-gray-800 p-4 rounded shadow";
@@ -48,8 +68,9 @@
             <p><strong>Entreprise :</strong> ${offre.entreprise?.nom || "N/A"}</p>
             <p><strong>Lieu :</strong> ${offre.lieuTravail?.libelle || "N/A"}</p>
             <p class="text-gray-400 mt-2">${offre.description?.slice(0, 200) || "Pas de description"}...</p>
-            <div class="flex justify-end mt-4">
-                <a href="detail.html?id=${offre.id}" class="text-blue-400 underline">Détails de l'offre</a>
+            <div class="flex justify-between items-center mt-4 text-sm text-gray-400">
+              <span>${tempsEcouleDepuis(offre.dateActualisation)}</span>
+              <a href="detail.html?id=${offre.id}" class="text-blue-400 underline">Détails de l'offre</a>
             </div>
           `;
           container.appendChild(div);
@@ -59,8 +80,9 @@
         console.error(err);
       }
     }
-
+  
     chargerOffres();
   </script>
+  
 </body>
 </html>
