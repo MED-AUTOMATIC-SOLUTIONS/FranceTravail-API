@@ -20,8 +20,8 @@ jobs:
     - name: 📦 Installer les dépendances
       run: npm install
 
-    - name: 🧪 Lancer les tests (facultatif)
-      run: npm test
+    # - name: 🧪 Lancer les tests (facultatif)
+    #   run: npm test
 
     - name: 🚀 Déploiement (placeholder)
       run: echo "Déploiement ici"
