@@ -15,7 +15,7 @@
   <script>
     async function chargerOffres() {
       try {
-        const res = await fetch('http://localhost:3000/api/offres');
+        const res = await fetch('https://francetravail-serveur.onrender.com/api/offres');
         const data = await res.json();
         console.log("✅ Données reçues :", data);
 
