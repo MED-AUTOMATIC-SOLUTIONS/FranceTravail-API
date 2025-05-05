@@ -22,7 +22,7 @@
       }
   
       try {
-        const res = await fetch(`https://med-automatic-solutions.github.io/FranceTravail-API/api/offres/${id}`);
+        const res = await fetch(`http://localhost:3000/api/offres/${id}`);
         const data = await res.json();
   
         if (!data || !data.intitule) {
