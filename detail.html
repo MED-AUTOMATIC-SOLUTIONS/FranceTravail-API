@@ -58,7 +58,7 @@
           <p class="mt-2"><strong>Permis exigés :</strong> <span class="text-gray-300">${(data.permis || []).map(p => p.libelle).join(', ') || "Aucun"}</span></p>
           <p class="mt-2"><strong>Rémunération :</strong> <span class="text-gray-300">${data.salaire?.libelle || "Non précisée"}</span></p>
           <p class="mt-2"><strong>Nombre de postes :</strong> <span class="text-gray-300">${data.nombrePostes || "Non précisé"}</span></p>
-          <p class="mt-4"><strong>Description complète :</strong></p>
+          <p class="mt-2"><strong>Description complète :</strong></p>
           <p class="mt-2 text-gray-400 whitespace-pre-line">${data.description || "Pas de description"}</p>
         `;
       } catch (err) {
