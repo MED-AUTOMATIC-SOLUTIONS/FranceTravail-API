@@ -10,8 +10,8 @@ const PORT = 3000;
 
 app.use(cors());
 
-const client_id = process.env.CLIENT_ID;
-const client_secret = process.env.CLIENT_SECRET;
+const client_id = "PAR_medautomaticsolutions_1140777cb38acac9427d3f38c388f5bcc6a0d7d52898bc4bfffd2923166f37cb";
+const client_secret = "8c8dfb2c3978dcb07baea0e5a7ab95ddc3f15d760dde3d235f2ebbd5171d0c76";
 
 app.get('/api/offres', async (req, res) => {
   try {
