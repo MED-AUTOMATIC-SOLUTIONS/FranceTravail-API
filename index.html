@@ -18,7 +18,8 @@
 </head>
 
 <body class="bg-gray-900 text-white p-4 sm:p-8 dark">
-  <h1 class="text-3xl font-bold mb-6 text-center">Offres d'emploi France Travail</h1>
+  <h1 class="text-3xl font-bold mb-2 text-center">Offres d'emploi France Travail</h1>
+  <div id="compteur" class="text-center text-gray-400 mb-6 text-sm"></div>
   <div id="offres" class="grid gap-4 max-w-4xl w-full mx-auto"></div>
   <div id="erreur" class="text-red-600 text-center mt-4"></div>
 
@@ -42,24 +43,27 @@
       if (minutes >= 1) return `il y a ${minutes} min`;
       return `à l’instant`;
     }
-  
+
     async function chargerOffres() {
       const container = document.getElementById("offres");
       const erreur = document.getElementById("erreur");
-  
+      const compteur = document.getElementById("compteur");
+
       container.innerHTML = "<div class='text-center p-4 text-gray-400 animate-pulse'>Chargement des offres...</div>";
-  
+
       try {
         const res = await fetch('https://francetravail-serveur.onrender.com/api/offres');
         const data = await res.json();
-  
+
         if (!data.resultats || data.resultats.length === 0) {
           container.innerHTML = "<p class='text-center text-gray-500'>Aucune offre trouvée.</p>";
+          compteur.textContent = '';
           return;
         }
-  
+
         container.innerHTML = '';
-  
+        compteur.textContent = `${data.resultats.length} offre${data.resultats.length > 1 ? 's' : ''} trouvée${data.resultats.length > 1 ? 's' : ''}`;
+
         data.resultats.forEach(offre => {
           const div = document.createElement("div");
           div.className = "bg-gray-800 p-4 rounded shadow";
@@ -80,9 +84,9 @@
         console.error(err);
       }
     }
-  
+
     chargerOffres();
   </script>
-  
 </body>
+
 </html>
