@@ -7,40 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
       
-<body class="bg-gray-100 p-8">
+<body class="bg-gray-900 text-white p-8 dark">
   <h1 class="text-3xl font-bold mb-6 text-center">Offres d'emploi France Travail</h1>
   <div id="offres" class="grid gap-4 max-w-4xl mx-auto"></div>
   <div id="erreur" class="text-red-600 text-center mt-4"></div>
 
   <script>
     async function chargerOffres() {
+      const container = document.getElementById("offres");
+      const erreur = document.getElementById("erreur");
+
+      // Affichage du loader
+      container.innerHTML = "<div class='text-center p-4 text-gray-400 animate-pulse'>Chargement des offres...</div>";
+
       try {
         const res = await fetch('https://francetravail-serveur.onrender.com/api/offres');
         const data = await res.json();
         console.log("✅ Données reçues :", data);
 
-        const container = document.getElementById("offres");
         if (!data.resultats || data.resultats.length === 0) {
           container.innerHTML = "<p class='text-center text-gray-500'>Aucune offre trouvée.</p>";
           return;
         }
 
+        container.innerHTML = ''; // Effacer le loader
+
         data.resultats.forEach(offre => {
           const div = document.createElement("div");
-          div.className = "bg-white p-4 rounded shadow";
-          div.innerHTML = `
+          div.className = "bg-gray-800 p-4 rounded shadow";
+          div.innerHTML = ` 
             <h2 class="text-xl font-bold mb-2">${offre.intitule}</h2>
             <p><strong>Entreprise :</strong> ${offre.entreprise?.nom || "N/A"}</p>
             <p><strong>Lieu :</strong> ${offre.lieuTravail?.libelle || "N/A"}</p>
-            <p class="text-gray-700 mt-2">${offre.description?.slice(0, 200) || "Pas de description"}...</p>
+            <p class="text-gray-400 mt-2">${offre.description?.slice(0, 200) || "Pas de description"}...</p>
             <div class="flex justify-end mt-4">
-                <a href="detail.html?id=${offre.id}" class="text-blue-600 underline">Détails de l'offre</a>
+                <a href="detail.html?id=${offre.id}" class="text-blue-400 underline">Détails de l'offre</a>
             </div>
-            `;
+          `;
           container.appendChild(div);
         });
       } catch (err) {
-        document.getElementById("erreur").textContent = "Erreur lors de la récupération des offres.";
+        erreur.textContent = "Erreur lors de la récupération des offres.";
         console.error("💥 Erreur :", err);
       }
     }

@@ -6,33 +6,45 @@
     <link rel="icon" href="logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-8">
-  <a href="index.html" class="text-blue-600 underline mb-4 block">← Retour à la liste</a>
-  <div id="offre" class="bg-white max-w-4xl mx-auto p-6 rounded shadow"></div>
+<body class="bg-gray-900 text-white p-8 dark">
+  <a href="index.html" class="text-blue-400 underline mb-4 block">← Retour à la liste</a>
+  
+  <!-- Loader -->
+  <div id="loader" class="flex justify-center items-center">
+    <div class="animate-spin rounded-full border-t-4 border-blue-400 w-16 h-16"></div>
+  </div>
+
+  <!-- Conteneur des détails de l'offre -->
+  <div id="offre" class="bg-gray-800 max-w-4xl mx-auto p-6 rounded shadow hidden"></div>
   <div id="erreur" class="text-red-600 text-center mt-4"></div>
 
   <script>
     async function chargerDetails() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
-  
+
       if (!id) {
         document.getElementById("erreur").textContent = "Identifiant d'offre manquant.";
         return;
       }
-  
+
       try {
         const res = await fetch(`https://francetravail-serveur.onrender.com/api/offres/${id}`);
         const data = await res.json();
-  
+
         if (!data || !data.intitule) {
           document.getElementById("erreur").textContent = "Aucune donnée trouvée pour cette offre.";
           return;
         }
-  
+
+        // Masquer le loader
+        document.getElementById("loader").classList.add("hidden");
+
+        // Afficher les détails de l'offre
         const container = document.getElementById("offre");
+        container.classList.remove("hidden");
         container.innerHTML = `
-          <h1 class="text-3xl font-bold mb-2">${data.intitule}</h1>
+          <h1 class="text-3xl font-bold mb-4">${data.intitule}</h1>
           <p class="mt-2"><strong>Entreprise :</strong> ${data.entreprise?.nom || "N/A"}</p>
           <p class="mt-2"><strong>Secteur d'activité :</strong> ${data.entreprise?.secteurActiviteLibelle || "N/A"}</p>
           <p class="mt-2"><strong>Lieu :</strong> ${data.lieuTravail?.libelle || "N/A"}</p>
@@ -49,16 +61,15 @@
           <p class="mt-2"><strong>Rémunération :</strong> ${data.salaire?.libelle || "Non précisée"}</p>
           <p class="mt-2"><strong>Nombre de postes :</strong> ${data.nombrePostes || "Non précisé"}</p>
           <p class="mt-4"><strong>Description complète :</strong></p>
-          <p class="mt-2 text-gray-700 whitespace-pre-line">${data.description || "Pas de description"}</p>
+          <p class="mt-2 text-gray-400 whitespace-pre-line">${data.description || "Pas de description"}</p>
         `;
       } catch (err) {
         document.getElementById("erreur").textContent = "Erreur lors du chargement de l'offre.";
         console.error(err);
       }
     }
-  
+
     chargerDetails();
   </script>
-  
 </body>
 </html>
