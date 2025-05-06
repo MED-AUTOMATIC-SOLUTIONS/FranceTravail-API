@@ -71,7 +71,7 @@
       erreur.textContent = '';
 
       try {
-        const res = await fetch(`http://localhost:3000/api/offres?codeNAF=${codeNAF}`);
+        const res = await fetch(`https://francetravail-serveur.onrender.com/api/offres?codeNAF=${codeNAF}`);
         const data = await res.json();
 
         if (!data.resultats || data.resultats.length === 0) {
