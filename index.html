@@ -17,11 +17,28 @@
   </style>
 </head>
 
-<body class="bg-gray-900 text-white p-4 sm:p-8 dark">
-  <h1 class="text-3xl font-bold mb-2 text-center">Offres d'emploi France Travail</h1>
-  <div id="compteur" class="text-center text-gray-400 mb-6 text-sm"></div>
-  <div id="offres" class="grid gap-4 max-w-4xl w-full mx-auto"></div>
-  <div id="erreur" class="text-red-600 text-center mt-4"></div>
+<body class="bg-gray-900 text-gray-100 p-6 sm:p-10 font-sans">
+  <header class="max-w-6xl mx-auto mb-10">
+    <h1 class="text-4xl font-extrabold text-center text-blue-400">Offres d'emploi - France Travail</h1>
+    <p class="text-center text-gray-400 mt-2">Recherchez les meilleures opportunités par code NAF</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+      <input id="codeNAFInput" type="text" placeholder="Entrez un code NAF (ex : 62.01Z)" 
+             class="px-4 py-2 rounded border border-gray-700 bg-gray-800 text-white w-full sm:w-1/2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+      <button onclick="rechercherParCodeNAF()" 
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+        Rechercher
+      </button>
+    </div>
+
+    <div id="compteur" class="text-center text-sm text-gray-400 mb-4"></div>
+
+    <div id="offres" class="grid gap-6"></div>
+
+    <div id="erreur" class="text-red-400 text-center mt-6"></div>
+  </main>
 
   <script>
     function tempsEcouleDepuis(dateString) {
@@ -41,23 +58,24 @@
       if (jours >= 1) return `il y a ${jours} jour${jours > 1 ? 's' : ''}`;
       if (heures >= 1) return `il y a ${heures} h`;
       if (minutes >= 1) return `il y a ${minutes} min`;
-      return `à l’instant`;
+      return `à l'instant`;
     }
 
-    async function chargerOffres() {
+    async function chargerOffres(codeNAF = '86.21Z') {
       const container = document.getElementById("offres");
       const erreur = document.getElementById("erreur");
       const compteur = document.getElementById("compteur");
 
-      container.innerHTML = "<div class='text-center p-4 text-gray-400 animate-pulse'>Chargement des offres...</div>";
+      container.innerHTML = "<div class='text-center text-gray-500 animate-pulse'>Chargement des offres...</div>";
+      compteur.textContent = '';
+      erreur.textContent = '';
 
       try {
-        const res = await fetch('https://francetravail-serveur.onrender.com/api/offres');
+        const res = await fetch(`http://localhost:3000/api/offres?codeNAF=${codeNAF}`);
         const data = await res.json();
 
         if (!data.resultats || data.resultats.length === 0) {
-          container.innerHTML = "<p class='text-center text-gray-500'>Aucune offre trouvée.</p>";
-          compteur.textContent = '';
+          container.innerHTML = "<p class='text-center text-gray-400'>Aucune offre trouvée.</p>";
           return;
         }
 
@@ -66,15 +84,15 @@
 
         data.resultats.forEach(offre => {
           const div = document.createElement("div");
-          div.className = "bg-gray-800 p-4 rounded shadow";
-          div.innerHTML = ` 
-            <h2 class="text-xl font-bold mb-2">${offre.intitule}</h2>
-            <p><strong>Entreprise :</strong> ${offre.entreprise?.nom || "N/A"}</p>
-            <p><strong>Lieu :</strong> ${offre.lieuTravail?.libelle || "N/A"}</p>
-            <p class="text-gray-400 mt-2">${offre.description?.slice(0, 200) || "Pas de description"}...</p>
-            <div class="flex justify-between items-center mt-4 text-sm text-gray-400">
+          div.className = "bg-gray-800 border border-gray-700 rounded-lg p-6 shadow";
+          div.innerHTML = `
+            <h2 class="text-2xl font-semibold text-blue-300 mb-2">${offre.intitule}</h2>
+            <p class="mb-1"><span class="font-medium">Entreprise :</span> ${offre.entreprise?.nom || "N/A"}</p>
+            <p class="mb-1"><span class="font-medium">Lieu :</span> ${offre.lieuTravail?.libelle || "N/A"}</p>
+            <p class="text-gray-400 mt-2 text-sm">${offre.description?.slice(0, 250) || "Pas de description"}...</p>
+            <div class="flex justify-between items-center mt-4 text-sm text-gray-500">
               <span>${tempsEcouleDepuis(offre.dateActualisation)}</span>
-              <a href="detail.html?id=${offre.id}" class="text-blue-400 underline">Détails de l'offre</a>
+              <a href="detail.html?id=${offre.id}" class="text-blue-400 hover:underline">Détails de l'offre</a>
             </div>
           `;
           container.appendChild(div);
@@ -85,8 +103,15 @@
       }
     }
 
+    function rechercherParCodeNAF() {
+      const input = document.getElementById('codeNAFInput');
+      const codeNAF = input.value.trim();
+      if (codeNAF) {
+        chargerOffres(codeNAF);
+      }
+    }
+
     chargerOffres();
   </script>
 </body>
-
 </html>

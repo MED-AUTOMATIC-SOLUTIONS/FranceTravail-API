@@ -38,7 +38,9 @@ app.get('/api/offres', async (req, res) => {
 
     console.log('📡 Requête vers l\'API des offres (filtrée par code NAF médical)...');
 
-    const offresRes = await fetch('https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search?codeNAF=86.21Z', {
+    const codeNAF = req.query.codeNAF || '86.21Z';
+    const offresRes = await fetch(`https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search?codeNAF=${codeNAF}`,
+        {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
         Accept: 'application/json'

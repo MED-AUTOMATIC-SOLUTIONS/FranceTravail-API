@@ -2,21 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Offres France Travail</title>
+  <title>Détail de l'offre - France Travail</title>
   <link rel="icon" href="logo.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-900 text-white p-4 sm:p-8 dark">
-  <a href="index.html" class="text-blue-400 underline mb-4 block">← Retour à la liste</a>
+<body class="bg-gray-900 text-gray-100 p-6 sm:p-10 font-sans">
+  <header class="max-w-6xl mx-auto mb-10">
+    <a href="index.html" class="text-blue-400 hover:underline mb-6 inline-block">&larr; Retour à la liste</a>
+    <h1 class="text-4xl font-extrabold text-center text-blue-400 mb-2">Détail de l'offre</h1>
+  </header>
 
-  <div id="loader" class="flex justify-center items-center">
-    <div class="animate-spin rounded-full border-t-4 border-blue-400 w-16 h-16"></div>
-  </div>
+  <main class="max-w-4xl mx-auto">
+    <div id="loader" class="flex justify-center items-center">
+      <div class="animate-spin rounded-full border-t-4 border-blue-400 w-16 h-16"></div>
+    </div>
 
-  <div id="offre" class="bg-gray-800 max-w-4xl w-full mx-auto p-4 sm:p-6 rounded shadow hidden"></div>
-  <div id="erreur" class="text-red-600 text-center mt-4"></div>
+    <div id="offre" class="bg-gray-800 border border-gray-700 max-w-4xl w-full mx-auto p-6 sm:p-8 rounded-lg shadow hidden"></div>
+    <div id="erreur" class="text-red-400 text-center mt-6"></div>
+  </main>
 
   <script>
     async function chargerDetails() {
@@ -42,52 +56,30 @@
         container.classList.remove("hidden");
 
         container.innerHTML = `
-          <h1 class="text-3xl font-bold mb-4">${data.intitule}</h1>
-          <p class="mt-2"><strong>Entreprise :</strong> <span class="text-gray-300">${data.entreprise?.nom || "N/A"}</span></p>
-          <p class="mt-2"><strong>Secteur d'activité :</strong> <span class="text-gray-300">${data.entreprise?.secteurActiviteLibelle || "N/A"}</span></p>
-          <p class="mt-2">
-            <strong>Offre posté le :</strong>
-            <span class="text-gray-300">
-              ${data.dateCreation
-                ? new Date(data.dateCreation).toLocaleString('fr-FR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }).replace(',', ' à')
-                : "N/A"}
-            </span>
-          </p>
-          <p class="mt-2"><strong>Lieu :</strong> <span class="text-gray-300">${data.lieuTravail?.libelle || "N/A"}</span></p>
-          <p class="mt-2">
-            <strong>Dernière mise à jour :</strong>
-            <span class="text-gray-300">
-              ${data.dateActualisation
-                ? new Date(data.dateActualisation).toLocaleString('fr-FR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }).replace(',', ' à')
-                : "N/A"}
-            </span>
-          </p>
-          <p class="mt-2"><strong>Type de contrat :</strong> <span class="text-gray-300">${data.typeContratLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Date de début :</strong> <span class="text-gray-300">${data.dateDebut || "N/A"}</span></p>
-          <p class="mt-2"><strong>Durée :</strong> <span class="text-gray-300">${data.dureeTravailLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Horaires :</strong> <span class="text-gray-300">${data.tempsTravailLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Expérience requise :</strong> <span class="text-gray-300">${data.experienceLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Qualification :</strong> <span class="text-gray-300">${data.qualificationLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Niveau d'étude :</strong> <span class="text-gray-300">${data.niveauEtudeLibelle || "N/A"}</span></p>
-          <p class="mt-2"><strong>Langues :</strong> <span class="text-gray-300">${(data.langues || []).map(l => l.libelle + (l.niveauLibelle ? ` (${l.niveauLibelle})` : '')).join(', ') || "Non spécifiées"}</span></p>
-          <p class="mt-2"><strong>Compétences :</strong> <span class="text-gray-300">${(data.competences || []).map(c => c.libelle).join(', ') || "Non spécifiées"}</span></p>
-          <p class="mt-2"><strong>Permis exigés :</strong> <span class="text-gray-300">${(data.permis || []).map(p => p.libelle).join(', ') || "Aucun"}</span></p>
-          <p class="mt-2"><strong>Rémunération :</strong> <span class="text-gray-300">${data.salaire?.libelle || "Non précisée"}</span></p>
-          <p class="mt-2"><strong>Nombre de postes :</strong> <span class="text-gray-300">${data.nombrePostes || "Non précisé"}</span></p>
-          <p class="mt-2"><strong>Description complète :</strong></p>
-          <p class="mt-2 text-gray-400 whitespace-pre-line">${data.description || "Pas de description"}</p>
+          <h2 class="text-3xl font-bold text-blue-300 mb-4">${data.intitule}</h2>
+          <div class="space-y-3 text-sm text-gray-300">
+            <p><strong>Entreprise :</strong> ${data.entreprise?.nom || "N/A"}</p>
+            <p><strong>Secteur d'activité :</strong> ${data.entreprise?.secteurActiviteLibelle || "N/A"}</p>
+            <p><strong>Offre postée le :</strong> ${data.dateCreation ? new Date(data.dateCreation).toLocaleString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' à') : "N/A"}</p>
+            <p><strong>Lieu :</strong> ${data.lieuTravail?.libelle || "N/A"}</p>
+            <p><strong>Dernière mise à jour :</strong> ${data.dateActualisation ? new Date(data.dateActualisation).toLocaleString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', ' à') : "N/A"}</p>
+            <p><strong>Type de contrat :</strong> ${data.typeContratLibelle || "N/A"}</p>
+            <p><strong>Date de début :</strong> ${data.dateDebut || "N/A"}</p>
+            <p><strong>Durée :</strong> ${data.dureeTravailLibelle || "N/A"}</p>
+            <p><strong>Horaires :</strong> ${data.tempsTravailLibelle || "N/A"}</p>
+            <p><strong>Expérience requise :</strong> ${data.experienceLibelle || "N/A"}</p>
+            <p><strong>Qualification :</strong> ${data.qualificationLibelle || "N/A"}</p>
+            <p><strong>Niveau d'étude :</strong> ${data.niveauEtudeLibelle || "N/A"}</p>
+            <p><strong>Langues :</strong> ${(data.langues || []).map(l => l.libelle + (l.niveauLibelle ? ` (${l.niveauLibelle})` : '')).join(', ') || "Non spécifiées"}</p>
+            <p><strong>Compétences :</strong> ${(data.competences || []).map(c => c.libelle).join(', ') || "Non spécifiées"}</p>
+            <p><strong>Permis exigés :</strong> ${(data.permis || []).map(p => p.libelle).join(', ') || "Aucun"}</p>
+            <p><strong>Rémunération :</strong> ${data.salaire?.libelle || "Non précisée"}</p>
+            <p><strong>Nombre de postes :</strong> ${data.nombrePostes || "Non précisé"}</p>
+          </div>
+          <div class="mt-6">
+            <h3 class="text-xl font-semibold text-blue-300 mb-2">Description complète</h3>
+            <p class="text-gray-400 whitespace-pre-line text-sm">${data.description || "Pas de description"}</p>
+          </div>
         `;
       } catch (err) {
         document.getElementById("erreur").textContent = "Erreur lors du chargement de l'offre.";
