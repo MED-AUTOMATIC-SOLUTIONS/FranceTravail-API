@@ -86,7 +86,7 @@
           const div = document.createElement("div");
           div.className = "bg-gray-800 border border-gray-700 rounded-lg p-6 shadow";
           div.innerHTML = `
-            <h2 class="text-2xl font-semibold text-blue-300 mb-2">${offre.intitule}</h2>
+            <h2 class="text-xl font-semibold text-blue-300 mb-2">${offre.intitule}</h2>
             <p class="mb-1"><span class="font-medium">Entreprise :</span> ${offre.entreprise?.nom || "N/A"}</p>
             <p class="mb-1"><span class="font-medium">Lieu :</span> ${offre.lieuTravail?.libelle || "N/A"}</p>
             <p class="text-gray-400 mt-2 text-sm">${offre.description?.slice(0, 250) || "Pas de description"}...</p>
